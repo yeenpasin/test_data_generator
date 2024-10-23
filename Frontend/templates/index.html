@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- import icon -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-..." crossorigin="anonymous" />
+
+    <!-- import bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" integrity="sha512-..."
+        crossorigin="anonymous" />
+
+    <script src="{{ url_for('static', filename='js/script.js')}}"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Generate Test Data</title>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="font-monospace">Generate Test Data</h1>
+
+        <form id="generateForm" action="/generate" method="post">
+            <br />
+
+            <div class="headTxt">
+                <label for="data_type" class="font-monospace"> Data Types </label>
+                <label for="field_name" class="font-monospace">Field Name</label>
+                <label for="settings" class="font-monospace">Settings</label>
+
+
+                <div id="form-rows">
+
+                    <div class="form-row">
+                        <div>
+                            <div>
+                                <button type="button" class="select-data-type" style="font-size: 10px;">Select Data
+                                    Type</button>
+                                <input type="hidden" class="data_type" name="data_type" value="">
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" class="field_name" name="field_name" value="">
+                        </div>
+
+
+                        <div class="settings_container">
+                            <select class="settings" name="settings" id="settings">
+                                <option value="" disabled selected style="display:none;">- Select -</option>
+                            </select>
+                        </div>
+
+                        <div class="additional_options" style="display: none;">
+                            <input type="text" class="include" name="include" placeholder="Include">
+                            <input type="text" class="exclude" name="exclude" placeholder="Exclude">
+                            <input type="text" class="only" name="only" placeholder="Only">
+                            <input type="text" class="decimal" name="decimal" placeholder="Decimal">
+                            <input type="text" class="fix_namelength" name="fix_namelength" placeholder="Fix Length">
+                            <input type="text" class="name_lengthMax" name="name_lengthMax" placeholder="Max Length">
+                            <input type="text" class="firstLatLon" name="firstLatLon" placeholder="Lat,Lon (Start)"
+                                style="width: 80px;">
+                            <input type="text" class="secLatLon" name="secLatLon" placeholder="Lat,Lon (End)"
+                                style="width: 80px;">
+                        </div>
+
+                        <div class="moveDelbtn">
+                            <button type="button" class="drag-handle"><i class="fas fa-grip-vertical"></i></button>
+                            <button type="button" class="deleteRowBtn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- เลือก Datatype Modal -->
+            <div id="dataTypeModal" class="dataTypeModal">
+                <div class="datatypeModal-content">
+                    <span class="closeDatatypeModal">&times;</span>
+                    <br>
+                    <br>
+                    <h2>Select Data Type</h2>
+
+                    <div class="selectMulti">
+                        <label>
+                            <input type="checkbox" id="multiSelectToggle"> select multiple items
+                        </label>
+                    </div>
+
+                    <div class="data-type-menu">
+                        <div class="menu-section">
+                            <h3 class="category-header" data-category="personal">Personal Data ()</h3>
+                            <ul class="sub-menu" id="personal-submenu" style="display: none;">
+                                <li data-type="Name"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Name</li>
+                                <li data-type="Phone"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Phone</li>
+                                <li data-type="Email"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Email</li>
+                                <li data-type="Username"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Username</li>
+                                <li data-type="password"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Password</li>
+                                <li data-type="IDcard"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> ID Card</li>
+                                <li data-type="nameTitle"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Name Title</li>
+                                <li data-type="job"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Job Position</li>
+                                <li data-type="dateOfbirth"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Date of Birth</li>
+                                <li data-type="bankAccount"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Bank Account</li>
+                            </ul>
+                        </div>
+                        <div class="menu-section">
+                            <h3 class="category-header" data-category="location">Location Data ()</h3>
+                            <ul class="sub-menu" id="location-submenu" style="display: none;">
+                                <li data-type="Location"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Location (Lat,Lon)</li>
+                                <li data-type="wayPoint"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Waypoint </li>
+                                <li data-type="country"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Country</li>
+                                <li data-type="Address"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Address</li>
+                                <li data-type="IPAddress"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> IP Address</li>
+                                <li data-type="postcode"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> PostCode</li>
+                            </ul>
+                        </div>
+                        <div class="menu-section">
+                            <h3 class="category-header" data-category="other">Other Data ()</h3>
+                            <ul class="sub-menu" id="other-submenu" style="display: none;">
+                                <li data-type="company"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Company</li>
+                                <li data-type="custom"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Custom</li>
+                                <li data-type="customNumber"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;">Custom Number</li>
+                                <li data-type="color"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Color</li>
+                                <li data-type="url"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> URL</li>
+                                <li data-type="file"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> File</li>
+                                <li data-type="currency"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Currency</li>
+                                <li data-type="text"><input type="checkbox" class="multi-select-checkbox"
+                                        style="display:none;"> Text</li>
+                            </ul>
+                        </div>
+
+                        <button id="confirmModal" type="button" style="display: none;">Confirm</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <label for="num_records" class="font-monospace">Number of records:</label>
+            <input type="number" id="num_records" name="num_records" min="1" required>
+
+            <div id="formRow">
+                <label for="format" class="font-monospace">Format:</label>
+                <select id="format" name="format" class="format">
+                    <option value="" disabled selected style="display:none;">- Select -</option>
+                    <option value="json">JSON</option>
+                    <option value="csv">CSV</option>
+                    <option value="txt">TXT</option>
+                </select>
+            </div>
+
+            <div id="delimiterRow" style="display: none;">
+                <label for="delimiter" class="font-monospace">Delimiter:</label>
+                <select id="delimiter" name="delimiter">
+                    <option value=",">Comma (,)</option>
+                    <option value=";">Semicolon (;)</option>
+                    <option value="tab">Tab</option>
+                    <option value=" ">Space</option>
+                    <option value="|">Pipe (|)</option>
+
+                </select>
+            </div>
+
+            <div class="btn-container">
+                <div class="btn-group1" id="btn-group1">
+                    <button type="submit" id="GenBtn" class="btn btn-warning">Generate</button>
+                    <button type="button" id="addBtn" class="btn btn-success">Add</button>
+                    <button type="button" id="clearBtn" class="btn btn-danger">Clear</button>
+                </div>
+                <div class="btn-group2" id="btn-group2">
+                    <button type="button" id="downloadBtn" class="btn btn-info">Download</button>
+                    <button type="button" id="saveTemplateBtn" class="btn btn-primary">Save Template</button>
+                    <button type="button" id="openFileBtn" class="btn btn-secondary">Open File</button>
+                    <input type="file" id="fileInput" style="display: none;" accept=".json">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="container2">
+        <div class="btn-copyDiv">
+            <button id="copyBtn"><i class="fas fa-copy"></i></button>
+            <div class="output" id="generatedCode">
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- </div> -->
+    <!-- PopUP -->
+    <div id="myPopup" class="popup">
+        <div class="popup-content">
+            <p style="font-weight: bold; color: #f9f9f9; white-space: nowrap;">Are you sure you want to clear all rows?
+            </p>
+            <div class="popup-button">
+                <button type="button" id="popupYes">Clear</button>
+                <button type="button" id="popupNo">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
